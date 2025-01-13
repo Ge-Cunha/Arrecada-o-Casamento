@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrecadação para o Casamento de Genisson e Soelene</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Ajude-nos a tornar nosso dia especial ainda mais inesquecível!">
+    <meta name="keywords" content="casamento, doação, arrecadação, amor, Genisson, Soelene">
+    <meta name="author" content="Genisson e Soelene">
+</head>
+<body>
+    <header>
+        <h1>Casamento de Genisson e Soelene</h1>
+        <p>Ajude-nos a tornar nosso dia especial ainda mais inesquecível!</p>
+    </header>
+
+    <section id="countdown"></section>
+
+    <section class="content">
+        <h2>Queridos amigos e familiares!</h2>
+        <p>Estamos muito felizes em compartilhar nosso momento especial com vocês! Para tornar nossa festa de casamento (08/02/2025, Chácara São Francisco, Jataizinho, 11h30) ainda mais inesquecível, gostaríamos de criar um grupo de apoio. Se vocês estiverem em condições de ajudar, qualquer quantia será muito bem-vinda para contribuir com a decoração, arranjos florais, aluguel do salão, mesas, flores e todos os itens necessários para a decoração. NÃO É OBRIGATÓRIO!</p>
+        <p>Agradecemos desde já pela sua presença e apoio!</p>
+        <h3>Chave Pix para Contribuição</h3>
+        <p>CPF: <span id="cpfPix">05304500970</span> <button onclick="copiarCPF()">Copiar</button></p>
+        <p>Cristiane Arruda Tavares</p>
+        <p>⚠️⚠️Para transparência, atualizaremos aqui no grupo a quantia arrecadada periodicamente⚠️⚠️</p>
+
+        <h2>Progresso da Arrecadação</h2>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <p>Meta: R$ 6.000,00</p>
+        <p id="amount-raised">Arrecadado: R$ 0,00</p>
+
+        <input type="password" id="senha" placeholder="Senha">
+        <button onclick="validarSenha()">Validar Senha</button>
+
+        <div id="botoes-doacao" style="display: none;">
+            <button onclick="adicionarDoacao()">Adicionar Doação</button>
+            <button onclick="retirarDoacao()">Retirar Doação</button>
+        </div>
+    </section>
+
+    <script>
+        const meta = 6000.00; // Meta de arrecadação
+        let arrecadado = 0.00; // Valor inicial arrecadado
+
+        // Função para contagem regressiva
+        const countDownDate = new Date("Feb 08, 2025 00:00:00").getTime();
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s `;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "EXPIRED";
+            }
+        }, 1000);
+
+        function atualizarProgresso() {
+            const progressBar = document.getElementById("progress-bar");
+            const amountRaised = document.getElementById("amount-raised");
+
+            const percentage = (arrecadado / meta) * 100;
+            progressBar.style.width = percentage + "%";
+            amountRaised.innerHTML = `Arrecadado: R$ ${arrecadado.toFixed(2)}`;
+        }
+
+        // Função para registrar doações recebidas manualmente
+        function registrarDoacao(valor) {
+            arrecadado += valor;
+            atualizarProgresso();
+        }
+
+        // Função para retirar doações
+        function retirarDoacao(valor) {
+            if (arrecadado >= valor) {
+                arrecadado -= valor;
+                atualizarProgresso();
+            } else {
+                alert("Valor a ser retirado é maior que o valor arrecadado.");
+            }
+        }
+
+        // Função para validar a senha
+        function validarSenha() {
+            const senha = document.getElementById("senha").value;
+            if (senha === "1303") {
+                document.getElementById("botoes-doacao").style.display = "block";
+            } else {
+                alert("Senha incorreta. Tente novamente.");
+                document.getElementById("botoes-doacao").style.display = "none";
+            }
+            document.getElementById("senha").value = ""; // Limpa o campo de senha
+        }
+
+        // Função para adicionar doação
+        function adicionarDoacao() {
+            const valor = parseFloat(prompt("Digite o valor da doação:"));
+            if (!isNaN(valor)) {
+                registrarDoacao(valor);
+                alert(`Doação de R$ ${valor.toFixed(2)} adicionada com sucesso!`);
+            } else {
+                alert("Valor inválido. Tente novamente.");
+            }
+        }
+
+        // Função para retirar doação
+        function retirarDoacao() {
+            const valor = parseFloat(prompt("Digite o valor a ser retirado:"));
+            if (!isNaN(valor)) {
+                retirarDoacao(valor);
+                alert(`Retirada de R$ ${valor.toFixed(2)} efetuada com sucesso!`);
+            } else {
+                alert("Valor inválido. Tente novamente.");
+            }
+        }
+
+        // Função para copiar o CPF
+        function copiarCPF() {
+            const cpfPix = document.getElementById("cpfPix").innerText;
+            navigator.clipboard.writeText(cpfPix).then(function() {
+                alert("Chave Pix copiada: " + cpfPix);
+            }, function(err) {
+                console.error("Erro ao copiar chave Pix: ", err);
+            });
+        }
+
+        // Atualiza o progresso ao carregar a página
+        atualizarProgresso();
+    </script>
+</body>
+</html>
